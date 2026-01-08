@@ -1,0 +1,26 @@
+# --- System Files (Junk) ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+__pycache__/
+*.pyc
+
+# --- Security (NEVER UPLOAD THESE) ---
+.env
+.env.local
+.env.production
+backend/.env
+backend/serviceAccountKey.json
+frontend/.env
+frontend/.env.production
+
+# --- Backend (Python) ---
+backend/venv/
+backend/.pytest_cache/
+
+# --- Frontend (Node/React) ---
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.eslintcache

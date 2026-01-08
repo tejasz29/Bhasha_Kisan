@@ -1,0 +1,16 @@
+[build]
+  # 1. Enter this directory first
+  base = "Frontend"
+
+  # 2. Publish the 'dist' folder FOUND INSIDE the base directory
+  # (Netlify combines base + publish, so this equals Frontend/dist)
+  publish = "dist"
+
+  # 3. The command to build your site
+  command = "npm install && npm run build"
+
+[[redirects]]
+  # Fixes "Page Not Found" on refresh
+  from = "/*"
+  to = "/index.html"
+  status = 200
