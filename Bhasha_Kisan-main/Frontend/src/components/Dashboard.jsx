@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 const Dashboard = ({ backendUrl }) => {
   const [query, setQuery] = useState("");
@@ -6,6 +6,9 @@ const Dashboard = ({ backendUrl }) => {
   const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  
+  const synthRef = useRef(window.speechSynthesis);
 
   // 1. Fetch Weather
   useEffect(() => {
@@ -25,8 +28,6 @@ const Dashboard = ({ backendUrl }) => {
       recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript;
         setQuery(transcript);
-        // Optional: Auto-submit on voice end
-        // handleSearch(transcript, null); 
       };
       recognition.start();
     } else {
@@ -34,7 +35,53 @@ const Dashboard = ({ backendUrl }) => {
     }
   };
 
-  // 3. Search Logic (DEBUG VERSION)
+  // 3. Text-to-Speech with Male Voice
+  const speakResponse = () => {
+    if (isSpeaking) {
+      synthRef.current.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+
+    if (!response) return;
+
+    const utterance = new SpeechSynthesisUtterance(response);
+    
+    // Select a male voice
+    const voices = synthRef.current.getVoices();
+    const maleVoice = voices.find(voice => 
+      voice.name.includes('Male') ||
+      voice.name.includes('Google हिन्दी') ||
+      voice.name.includes('Google UK English Male') ||
+      voice.name.includes('Microsoft David') ||
+      voice.name.includes('Rishi') ||
+      (voice.lang.startsWith('hi') || voice.lang.startsWith('en'))
+    );
+    
+    if (maleVoice) {
+      utterance.voice = maleVoice;
+    }
+    
+    // Male voice settings
+    utterance.rate = 0.95; // Slightly slower for clarity
+    utterance.pitch = 0.9; // Lower pitch for male voice
+    utterance.volume = 1.0; // Full volume
+    utterance.lang = 'hi-IN'; // Hindi language
+    
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+    
+    synthRef.current.speak(utterance);
+  };
+
+  // Stop speaking
+  const stopSpeaking = () => {
+    synthRef.current.cancel();
+    setIsSpeaking(false);
+  };
+
+  // 4. Search Logic
   const handleSearch = async (manualQuery, imageFile) => {
     const textToSend = manualQuery || query;
     if (!textToSend && !imageFile) {
@@ -42,7 +89,6 @@ const Dashboard = ({ backendUrl }) => {
       return;
     }
 
-    // 1. START LOADING
     setLoading(true);
     setResponse(null);
     console.log("🚀 Sending Request to:", backendUrl);
@@ -53,7 +99,6 @@ const Dashboard = ({ backendUrl }) => {
       if (textToSend) formData.append("text", textToSend);
       if (imageFile) formData.append("image", imageFile);
 
-      // 2. SEND TO BACKEND
       const res = await fetch(backendUrl, { method: "POST", body: formData });
       
       console.log("📡 Server Status:", res.status);
@@ -66,11 +111,30 @@ const Dashboard = ({ backendUrl }) => {
       console.log("✅ Data Received:", data);
       setResponse(data.answer);
 
+      // Auto-play voice response
+      setTimeout(() => {
+        if (data.answer) {
+          const utterance = new SpeechSynthesisUtterance(data.answer);
+          const voices = synthRef.current.getVoices();
+          const maleVoice = voices.find(voice => 
+            voice.name.includes('Male') ||
+            voice.name.includes('Google हिन्दी') ||
+            (voice.lang.startsWith('hi') || voice.lang.startsWith('en'))
+          );
+          if (maleVoice) utterance.voice = maleVoice;
+          utterance.rate = 0.95;
+          utterance.pitch = 0.9;
+          utterance.lang = 'hi-IN';
+          utterance.onstart = () => setIsSpeaking(true);
+          utterance.onend = () => setIsSpeaking(false);
+          synthRef.current.speak(utterance);
+        }
+      }, 500);
+
     } catch (err) {
       console.error("🔥 FETCH ERROR:", err);
       setResponse(`❌ Error: ${err.message}. (Check Console F12 for details)`);
     } finally {
-      // 3. STOP LOADING (Always run this!)
       setLoading(false);
     }
   };
@@ -146,7 +210,32 @@ const Dashboard = ({ backendUrl }) => {
       {/* AI Response */}
       {(response || loading) && (
         <div className="response-box">
-          <h3 style={{color:'#14532d', marginTop:0}}>🤖 Bhasha-Kisan Says:</h3>
+          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
+            <h3 style={{color:'#14532d', margin:0}}>🤖 Bhasha-Kisan Says:</h3>
+            {response && !loading && (
+              <div style={{display: 'flex', gap: '10px'}}>
+                <button 
+                  onClick={speakResponse}
+                  style={{
+                    background: isSpeaking ? '#ef4444' : '#22c55e',
+                    color: 'white',
+                    border: 'none',
+                    padding: '10px 20px',
+                    borderRadius: '25px',
+                    cursor: 'pointer',
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    transition: 'all 0.3s'
+                  }}
+                >
+                  {isSpeaking ? '⏹️ Stop' : '🔊 Play Voice'}
+                </button>
+              </div>
+            )}
+          </div>
           {loading ? (
             <p style={{color: '#22c55e', fontWeight: 'bold'}}>
               Analyzing... (This may take 60 seconds if server is waking up)
