@@ -9,7 +9,7 @@ Bringing **Artificial Intelligence to Indian Agriculture** — in the language f
 ![Frontend](https://img.shields.io/badge/Frontend-React%20%2B%20Vite-blue)
 ![Backend](https://img.shields.io/badge/Backend-FastAPI-orange)
 ![AI](https://img.shields.io/badge/AI-Google%20Gemini-purple)
-![Deployment](https://img.shields.io/badge/Deployment-Netlify%20%2B%20Docker-black)
+![Deployment](https://img.shields.io/badge/Deployment-Vercel%20%2B%20Docker-black)
 
 </div>
 
@@ -146,7 +146,7 @@ FIREBASE_CREDENTIALS=your_firebase_credentials
 
 | Layer    | Platform                             |
 | -------- | ------------------------------------ |
-| Frontend | Netlify                              |
+| Frontend | Vercel                               |
 | Backend  | Docker / Cloud VM / Render / Railway |
 
 
