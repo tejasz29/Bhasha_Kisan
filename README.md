@@ -1,68 +1,153 @@
+<div align="center">
+
 # 🌾 Bhasha Kisan  
-### Multilingual AI Assistant for Farmers
+### AI-Powered Multilingual Voice Assistant for Farmers  
 
-Bhasha Kisan is a farmer-focused application designed to reduce the **language barrier in agriculture** by enabling users to interact in their **native language** and receive relevant farming-related information.
+Bringing **Artificial Intelligence to Indian Agriculture** — in the language farmers understand.
 
-The project aims to make agricultural technology **accessible, simple, and practical** for rural users.
+![Status](https://img.shields.io/badge/Status-Active-brightgreen)
+![Frontend](https://img.shields.io/badge/Frontend-React%20%2B%20Vite-blue)
+![Backend](https://img.shields.io/badge/Backend-FastAPI-orange)
+![AI](https://img.shields.io/badge/AI-Google%20Gemini-purple)
+![Deployment](https://img.shields.io/badge/Deployment-Netlify%20%2B%20Docker-black)
 
----
-
-## 🚜 Problem Statement
-
-Most digital agriculture platforms:
-- Prioritize English content
-- Require technical literacy
-- Do not support regional Indian languages
-
-This limits accessibility for farmers who need timely and understandable information.
+</div>
 
 ---
 
-## 💡 Solution Overview
+## 🌟 What is Bhasha Kisan?
 
-Bhasha Kisan allows farmers to:
-- Ask questions in their local language
-- Use voice or text input
-- Receive AI-generated responses in the same language
+**Bhasha Kisan** is an **AI-powered multilingual voice assistant** built to help farmers get **instant agricultural guidance** using their **own language and voice**.
 
-The system focuses on **usability over complexity**.
+Instead of searching the internet or visiting experts, farmers can simply:
+> Speak → Ask → Get AI-generated advice → Hear the response.
 
 ---
 
-## ✨ Features
+## 🎯 Problem We Solve
 
-- 🌐 Multilingual language support  
-- 🎙️ Voice-based interaction (Speech-to-Text & Text-to-Speech)  
-- 🤖 AI-powered query handling  
-- 🌱 Crop-related guidance  
-- 📱 Simple and farmer-friendly interface  
+Farmers face three major barriers when using technology:
+- ❌ English-only platforms  
+- ❌ Complex mobile apps  
+- ❌ Text-based interfaces  
 
----
-
-## 🛠️ Tech Stack
-
-- **Frontend:** HTML, CSS, JavaScript  
-- **Backend:** Node.js / Python *(as per implementation)*  
-- **AI / NLP:** Language translation & NLP APIs  
-- **Speech Services:** Speech-to-Text & Text-to-Speech APIs  
-
-> Update this section to exactly match your implementation.
+**Bhasha Kisan removes all three.**
 
 ---
 
-## ⚙️ Working Flow
+## 🚀 What It Can Do
 
-1. User provides input via voice or text  
-2. Input is processed and translated if required  
-3. AI model analyzes the query  
-4. A relevant response is generated  
-5. Output is delivered in the user's selected language  
+- 🎤 Voice-based queries  
+- 🌍 Multilingual support (Hindi, Marathi, etc.)  
+- 🧠 AI-powered crop & farming advice  
+- 🔊 Text-to-speech responses  
+- ☁ Cloud-based backend  
+- 📍 Location-aware suggestions  
+- 🔐 Secure authentication with Firebase  
 
 ---
 
-## 🚀 Getting Started
+## 🧠 How It Works
 
-### Clone the repository
+```
+Farmer speaks
+      ↓
+Speech to Text (Browser)
+      ↓
+FastAPI Backend
+      ↓
+Google Gemini AI
+      ↓
+Translated & Optimized Answer
+      ↓
+Text + Voice Response
+```
+
+
+
+
+---
+
+## 🛠 Tech Stack
+
+### Frontend
+- ⚛ React (Vite)
+- 🎨 Tailwind CSS
+- 🎙 Web Speech API
+- 🔊 Text-to-Speech
+- 🌐 Netlify
+
+### Backend
+- 🐍 FastAPI
+- 🤖 Google Gemini API
+- 🔥 Firebase
+- 🐳 Docker
+
+---
+
+## 📁 Project Structure
+```
+Bhasha_Kisan
+│
+├── Backend
+│ ├── main.py
+│ ├── gemini_service.py
+│ ├── firebase_service.py
+│ ├── requirements.txt
+│ └── Dockerfile
+│
+├── Frontend
+│ ├── src
+│ │ ├── components
+│ │ ├── hooks
+│ │ └── App.jsx
+│ ├── tailwind.config.js
+│ ├── vite.config.js
+│ └── package.json
+│
+└── netlify.toml
+```
+
+
+---
+
+## ⚙️ Installation
+
+1️⃣ Clone the repository
 ```bash
-git clone https://github.com/your-username/bhasha-kisan.git
+### git clone https://github.com/your-username/bhasha-kisan.git
 cd bhasha-kisan
+```
+
+2️⃣ Backend Setup
+```bash
+cd Backend
+python -m venv venv
+source venv/bin/activate   # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
+3️⃣ Frontend Setup
+```bash
+cd Frontend
+npm install
+npm run dev
+```
+
+🔐 Environment Variables
+
+Create a .env file inside Backend/
+```bash
+GEMINI_API_KEY=your_api_key
+FIREBASE_CREDENTIALS=your_firebase_credentials
+```
+
+🌍 Deployment
+
+| Layer    | Platform                             |
+| -------- | ------------------------------------ |
+| Frontend | Netlify                              |
+| Backend  | Docker / Cloud VM / Render / Railway |
+
+
+
